@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +17,9 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Autenticação
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::get('/login/form', [UserController::class, 'loginForm'])->name('loginForm');
+Route::post('/login/register', [UserController::class, 'register'])->name('register');
+Route::post('logout', [UserController::class, 'logout'])->name('logout');
