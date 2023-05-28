@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Home')
+@section('title', 'Cadastros')
 
 
 @section('content')
@@ -87,4 +87,10 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#cpf').mask('999.999.999-99');
+            $('#birthdate').mask('99/99/9999');
+        });
+    </script>
 @endsection

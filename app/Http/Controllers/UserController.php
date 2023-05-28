@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -12,7 +13,36 @@ class UserController extends Controller
 {
     public function login()
     {
-        return view('page/loginForm');
+        return view('page/login');
+    }
+    public function logar(Request $request)
+    {
+        // Valide a solicitação de login
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Attempt autenticar o usuário
+        if (Auth::attempt($validatedData)) {
+            // success
+            return redirect()->route('home');
+        } else {
+            // Error
+            return redirect()->back()->with('error', 'E-mail ou senha inválidos.');
+        }
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        // Limpa a sessão atual do usuário
+        $request->session()->invalidate();
+
+        // Regenera o token de sessão
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
     public function loginForm()
     {
@@ -37,7 +67,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'users' => 'required|in:1,2',
-        ],$customMessages);
+        ], $customMessages);
 
         $birthdate = Carbon::createFromFormat('d/m/Y', $validatedData['birthdate'])->format('Y-m-d');
 

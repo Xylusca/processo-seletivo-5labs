@@ -20,6 +20,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Autenticação
 Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/logar', [UserController::class, 'logar'])->name('logar');
+
 Route::get('/login/form', [UserController::class, 'loginForm'])->name('loginForm');
 Route::post('/login/register', [UserController::class, 'register'])->name('register');
-Route::post('logout', [UserController::class, 'logout'])->name('logout');
+
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
