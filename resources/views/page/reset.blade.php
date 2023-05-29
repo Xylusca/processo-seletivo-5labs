@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'login')
+@section('title', 'Esqueci senha')
 
 
 @section('content')
@@ -10,9 +10,10 @@
                 <div class="col-6 shadow p-5 border">
                     <div class="card-register bg-white">
                         <div class="text-center">
-                            <h3 class="text-center fw-bold">Entrar na Store</h3>
+                            <img src="{{ asset('img/password.png') }}" alt="computador" class="col-3">
+                            <p class="mt-3">Insirar o E-mail e CPF para recuperar a senha.</p>
                         </div>
-                        <form class="form-card mt-5" action="{{ route('logar') }}" method="POST">
+                        <form class="form-card mt-3" action="{{ route('reset.enviar')}} " method="POST">
                             @csrf
                             <div class="row g-3">
 
@@ -24,15 +25,15 @@
                                         value="{{ old('email') }}">
                                 </div>
                                 <div class="col-md-12 form-outline">
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Password" value="{{ old('password') }}">
+                                    <input type="cpf" class="form-control" id="cpf" name="cpf"
+                                        placeholder="CPF" value="{{ old('cpf') }}">
                                 </div>
-                                <a href="{{  route('reset.form') }}" class="text-dark">Esqueci a senha</a>
+
 
                                 <div class="col-12">
                                     <div class="text-end">
                                         <button class="btn btn-primary btn-md fs-5 py-2 fw-bold rounded ms-3"
-                                            type="submit">Entrar</button>
+                                            type="submit">Enviar</button>
                                     </div>
                                 </div>
                             </div>
@@ -43,3 +44,4 @@
         </div>
     </div>
 @endsection
+

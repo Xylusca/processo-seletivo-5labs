@@ -13,13 +13,15 @@ class EmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $token;
+    protected $user;
+    protected $token;
+    protected $isPasswordReset;
 
-    public function __construct(User $user, $token)
+    public function __construct(User $user, $token, $isPasswordReset = false)
     {
         $this->user = $user;
         $this->token = $token;
+        $this->isPasswordReset = $isPasswordReset;
     }
 
     public function build()
@@ -30,10 +32,17 @@ class EmailVerification extends Mailable
             $transport->setStreamOptions(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
         }
 
-        return $this->subject('Verificação de Email')
+        $subject = $this->isPasswordReset ? 'Recuperação de Senha' : 'Verificação de Email';
+        $view = $this->isPasswordReset ? 'email.recuperar-senha' : 'email.verificacao-email';
+
+        return $this->subject($subject)
             ->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'))
             ->to($this->user->email)
-            ->view('page.verificacao-email')
+            ->view($view)
+            ->with([
+                'user' => $this->user,
+                'token' => $this->token,
+            ])
             ->withSwiftMessage(function ($message) {
                 $message->getHeaders()
                     ->addTextHeader('Content-Type', 'text/html');

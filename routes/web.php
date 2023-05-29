@@ -5,6 +5,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+
 
 
 /*
@@ -20,21 +23,26 @@ use App\Http\Controllers\VerificationController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Autenticação
+// Login
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/logar', [UserController::class, 'logar'])->name('logar');
-
 Route::get('/login/form', [UserController::class, 'loginForm'])->name('loginForm');
 Route::post('/login/register', [UserController::class, 'register'])->name('register');
-
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
-// perfil
+// Perfil
 Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/perfil/atualizar', [ProfileController::class, 'update'])->name('profile.update');
 
-// email
+// Verificar E-mail
 Route::get('/email/enviar', [VerificationController::class, 'enviarEmailVerificacao'])->name('email.enviar');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('email.verify');
 
 
+// Esqueci Senha
+Route::get('/reset/form', [ForgotPasswordController::class, 'resetPassword'])->name('reset.form');
+Route::post('/reset/enviar', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('reset.enviar');
+
+// Restaurar Senha
+Route::get('/password/reset/{token}/{email}', [ResetPasswordController::class, 'showResetForm'])->name('reset.password');
+Route::post('/password/register/', [ResetPasswordController::class, 'resetPassword'])->name('register.password');
