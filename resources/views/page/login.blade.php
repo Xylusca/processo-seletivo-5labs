@@ -10,8 +10,7 @@
                 <div class="col-6 shadow p-5 border">
                     <div class="card-register bg-white">
                         <div class="text-center">
-                            <h3 class="text-center fw-bold">Criar uma nova conta</h3>
-                            <p>É rápido e fácil.</p>
+                            <h3 class="text-center fw-bold">Entrar na Store</h3>
                         </div>
                         <form class="form-card mt-5" action="{{ route('logar') }}" method="POST">
                             @csrf
@@ -21,7 +20,7 @@
                                 @include('partials.message')
 
                                 <div class="col-md-12 form-outline">
-                                    <input type="text" class="form-control" name="email" placeholder="Email"
+                                    <input type="text" class="form-control" name="email" placeholder="E-mail"
                                         value="{{ old('email') }}">
                                 </div>
                                 <div class="col-md-12 form-outline">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -26,3 +27,7 @@ Route::get('/login/form', [UserController::class, 'loginForm'])->name('loginForm
 Route::post('/login/register', [UserController::class, 'register'])->name('register');
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+// perfil
+Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/perfil/atualizar', [ProfileController::class, 'update'])->name('profile.update');

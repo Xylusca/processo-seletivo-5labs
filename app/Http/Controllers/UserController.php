@@ -17,11 +17,14 @@ class UserController extends Controller
     }
     public function logar(Request $request)
     {
+        $customMessages = [
+            'required' => 'O campo :attribute é obrigatório.',
+        ];
         // Valide a solicitação de login
         $validatedData = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-        ]);
+        ], $customMessages);
 
         // Attempt autenticar o usuário
         if (Auth::attempt($validatedData)) {

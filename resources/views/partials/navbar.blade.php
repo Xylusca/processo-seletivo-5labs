@@ -22,7 +22,7 @@
                             <i class="fas fa-user fs-5"></i>
                         </a>
                         <ul class="dropdown-menu text-small shadow dropdown-menu-end" aria-labelledby="dropdownUser2">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Meu Perfil</a></li>
 
                             @if (Auth::user()->nivel_id >= 2)
                                 <li><a class="dropdown-item" href="#">Cadastro de Produtos</a></li>
@@ -43,8 +43,8 @@
                 </div>
             @else
                 <div class="col-md-3 text-end">
-                    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="{{ route('loginForm') }}" class="btn btn-primary">Sign-up</a>
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Entrar</a>
+                    <a href="{{ route('loginForm') }}" class="btn btn-primary">Cadastrar</a>
                 </div>
             @endif
         </header>
