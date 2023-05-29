@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class ProfileController extends Controller
@@ -44,9 +45,11 @@ class ProfileController extends Controller
             return redirect()->route('profile.edit')->with('error', 'Usuário não encontrado.');
         }
 
+        $birthdate = Carbon::createFromFormat('d/m/Y', $validatedData['birthdate'])->format('Y-m-d');
+
         // Atualize os dados do perfil do usuário logado
         $user->name = $validatedData['name'];
-        $user->birthdate = $validatedData['birthdate'];
+        $user->birthdate = $birthdate;
         $user->state = $validatedData['state'];
         $user->city = $validatedData['city'];
         $user->email = $validatedData['email'];

@@ -19,38 +19,50 @@
 
                             <div class="form-group col-md-6">
                                 <label for="name">Nome:</label>
-                                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ $user->name }}" required>
+                                <input type="text" name="name" id="name"
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ $user->name }}"
+                                    required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="cpf">CPF:</label>
-                                <input type="text" name="cpf" id="cpf" class="form-control @error('cpf') is-invalid @enderror"
-                                    value="{{ $user->cpf }}" disabled>
+                                <input type="text" name="cpf" id="cpf"
+                                    class="form-control @error('cpf') is-invalid @enderror" value="{{ $user->cpf }}"
+                                    disabled>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-9">
                                 <label for="email">E-mail:</label>
-                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
-                                    value="{{ $user->email }}" required>
+                                <input type="email" name="email" id="email"
+                                    class="form-control @error('email') is-invalid @enderror" value="{{ $user->email }}"
+                                    required>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-3">
+                                <a href="{{ route('email.enviar') }}" class="btn btn-secondary form-control mt-4">Verificar E-mail</a>
+                            </div>
+
+                            <div class="form-group col-md-4">
                                 <label for="email">Nascimento:</label>
-                                <input type="text" name="birthdate" id="birthdate" class="form-control @error('birthdate') is-invalid @enderror"
-                                    value="{{ $user->birthdate }}" required>
+                                <input type="text" name="birthdate" id="birthdate"
+                                    class="form-control @error('birthdate') is-invalid @enderror"
+                                    value="{{ \Carbon\Carbon::createFromFormat('Y-m-d', $user->birthdate)->format('d/m/Y') }}" required>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="state">Estado:</label>
-                                <input type="text" name="state" id="state" class="form-control @error('state') is-invalid @enderror"
-                                    value="{{ $user->state }}" required>
+                                <input type="text" name="state" id="state"
+                                    class="form-control @error('state') is-invalid @enderror" value="{{ $user->state }}"
+                                    required>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="city">Cidade:</label>
-                                <input type="text" name="city" id="city" class="form-control @error('city') is-invalid @enderror"
-                                    value="{{ $user->city }}" required>
+                                <input type="text" name="city" id="city"
+                                    class="form-control @error('city') is-invalid @enderror" value="{{ $user->city }}"
+                                    required>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="new_password">Nova Senha:</label>
-                                <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror">
-                                <p class="text-info">Se deseja alterar sua senha, preencha o campo <strong>'Nova Senha'</strong> com a
+                                <input type="password" name="new_password" id="new_password"
+                                    class="form-control @error('new_password') is-invalid @enderror">
+                                <p class="text-info">Se deseja alterar sua senha, preencha o campo <strong>'Nova
+                                        Senha'</strong> com a
                                     senha desejada. Caso contrário, deixe o campo em branco para manter sua senha
                                     atual.</p>
                             </div>

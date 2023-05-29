@@ -1,3 +1,12 @@
+{{-- message --}}
+@if (session('message'))
+    <div class="col-12">
+        <div class="alert alert-primary">
+            {{ session('message') }}
+        </div>
+    </div>
+@endif
+
 {{-- Errors --}}
 @if ($errors->any())
     <div class="col-12">
