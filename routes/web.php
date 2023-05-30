@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\ProductController;
 
 
 
@@ -46,3 +47,5 @@ Route::post('/reset/enviar', [ForgotPasswordController::class, 'sendResetLinkEma
 // Restaurar Senha
 Route::get('/password/reset/{token}/{email}', [ResetPasswordController::class, 'showResetForm'])->name('reset.password');
 Route::post('/password/register/', [ResetPasswordController::class, 'resetPassword'])->name('register.password');
+
+Route::get('/import-products', [ProductController::class, 'importProducts']);
