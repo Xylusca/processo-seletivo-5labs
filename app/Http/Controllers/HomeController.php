@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Product;
+
 class HomeController extends Controller
 {
-    /**
-     * Exibe a página inicial.
-     *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('page/home');
+        // número de itens por página
+        $perPage = 9;
+
+        // Obter os produtos paginados
+        $products = Product::with('user')->paginate($perPage);
+
+        return view('page.home', compact('products'));
     }
 }

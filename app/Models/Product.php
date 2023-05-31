@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Product extends Model
 {
@@ -24,8 +25,8 @@ class Product extends Model
     ];
 
 
-    public function seller()
+    public function user()
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(User::class, 'vendor_id');
     }
 }
