@@ -48,4 +48,5 @@ Route::post('/reset/enviar', [ForgotPasswordController::class, 'sendResetLinkEma
 Route::get('/password/reset/{token}/{email}', [ResetPasswordController::class, 'showResetForm'])->name('reset.password');
 Route::post('/password/register/', [ResetPasswordController::class, 'resetPassword'])->name('register.password');
 
+// Restaurar Importar Produtos da Api
 Route::get('/import-products', [ProductController::class, 'importProducts']);

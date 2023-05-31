@@ -13,9 +13,10 @@
             </h5>
 
             <h6 class="card-subtitle mb-2 text-muted">
-                <i class="fa-solid fa-user"></i>
+                <i class="fas fa-user"></i>
                 {{ $product->user->name }}
-                <a href="" class="text-primary link-underline">
+                <a href="" class="text-primary link-underline text-decoration-none">
+                    <i class="fas fa-filter"></i>
                     {{ $product->category }}
                 </a>
 
@@ -28,7 +29,7 @@
                 <div class="price text-success">
                     <h5 class="mt-4">R$ {{ $product->price }}</h5>
                 </div>
-                <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Comprar</a>
+                <a href="#" class="btn btn-primary mt-3"><i class="fas fa-shopping-cart"></i> Comprar</a>
             </div>
         </div>
     </div>
