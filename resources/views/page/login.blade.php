@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'login')
+@section('title', 'Login')
 
 
 @section('content')
     <div class="background-image-container">
         <div class="container-fluid px-1 mx-auto">
             <div class="row d-flex justify-content-center">
-                <div class="col-6 shadow p-5 border">
+                <div class="col-md-6 col-sm-9 shadow p-5 border">
                     <div class="card-register bg-white">
                         <div class="text-center">
                             <h3 class="text-center fw-bold">Entrar na Store</h3>

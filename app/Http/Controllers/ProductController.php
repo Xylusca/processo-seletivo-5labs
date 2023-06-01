@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
+    public function show($id)
+    {
+        // Obter o produto com base no ID fornecido
+        $product = Product::findOrFail($id);
+
+        // Calcular o valor total com desconto
+        $discount = $product->price * ($product->discount_percentage / 100);
+
+        $total = number_format($product->price - $discount, 2, ',', '');
+
+        // Passar o valor total para a view
+        return view('page.product', compact('product', 'total'));
+    }
+
     public function importProducts()
     {
         // Desativar a verificação do certificado SSL
