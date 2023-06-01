@@ -13,6 +13,9 @@ class Purchase extends Model
         'buyer_id',
         'seller_id',
         'product_id',
+        'quantity',
+        'total_price',
+
     ];
 
     public function buyer()

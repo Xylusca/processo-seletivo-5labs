@@ -3,7 +3,7 @@
         <div class="row border rounded shadow">
             <div class="col-md-6">
                 <div class="images p-3">
-                    <div class="text-center pt-4">
+                    <div class="text-center pt-4 ratio ratio-4x3">
                         <img id="main-image" src="{{ $product->image1 }}" width="340" height="400" />
                     </div>
                     <div class="thumbnail text-center">

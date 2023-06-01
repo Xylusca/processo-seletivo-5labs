@@ -52,9 +52,7 @@ Route::post('/password/register/', [ResetPasswordController::class, 'resetPasswo
 // Produto
 Route::get('/produto/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/produto/comprar', [ProductController::class, 'purchase'])->name('product.purchase');
-
-
-
+Route::get('/Minhas_compras', [ProductController::class, 'myPurchases'])->name('purchases');
 
 // Restaurar Importar Produtos da Api
-Route::get('/import-products', [ProductController::class, 'importProducts']);
+Route::get('/produto/import-products', [ProductController::class, 'importProducts']);

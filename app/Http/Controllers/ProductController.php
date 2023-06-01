@@ -42,8 +42,10 @@ class ProductController extends Controller
                 return redirect()->back()->withErrors('Você não pode comprar seu próprio produto.');
             }
 
-            // Verificar se o comprador tem créditos suficientes
+            // Valor do produto
             $priceWithDiscount = $product->price - ($product->price * ($product->discount_percentage / 100));
+
+            // Verificar se o comprador tem créditos suficientes
             if ($buyer->credits < $priceWithDiscount) {
                 return redirect()->back()->withErrors('Você não tem créditos suficientes para comprar este produto.');
             }
@@ -74,6 +76,47 @@ class ProductController extends Controller
             // Usuário não autenticado
             return redirect()->back()->withErrors('Você precisa estar logado para realizar a compra.');
         }
+    }
+    public function myPurchases(Request $request)
+    {
+        // Obter o ID do comprador autenticado
+        $userId = Auth::id();
+
+        // Obter o valor do parâmetro de pesquisa
+        $searchQuery = $request->input('q');
+
+        // Obter o valor do parâmetro de order
+        $order = $request->input('order', 'rating');
+
+        // Obter o valor do parâmetro de category
+        $selectedCategory = $request->input('category');
+
+        // Inicializar a consulta para obter as compras do comprador autenticado
+        $query = Purchase::where('buyer_id', $userId)
+            ->join('products', 'purchases.product_id', '=', 'products.id');
+
+        // Verificar se há um valor de pesquisa
+        if ($searchQuery) {
+            $query->where('products.title', 'like', '%' . $searchQuery . '%');
+        }
+        // Verificar se o filtro por categoria foi aplicado
+        $selectedCategory = $request->input('category');
+        if ($selectedCategory) {
+            $query->where('category', $selectedCategory);
+        }
+
+        if ($order === 'rating') {
+            $query->orderBy('products.rating', 'desc');
+        } elseif ($order === 'price_asc') {
+            $query->orderBy('purchases.total_price', 'asc');
+        } elseif ($order === 'price_desc') {
+            $query->orderBy('purchases.total_price', 'desc');
+        }
+
+        // Executar a consulta e obter as compras
+        $purchases = $query->get();
+
+        return view('page.my-purchase', compact('purchases', 'searchQuery', 'order', 'selectedCategory'));
     }
 
 

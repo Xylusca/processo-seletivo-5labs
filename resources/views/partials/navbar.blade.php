@@ -33,7 +33,7 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow dropdown-menu-end" aria-labelledby="dropdownUser2">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Meu Perfil</a></li>
-                        <li><a class="dropdown-item" href="">Minhas Compras</a></li>
+                        <li><a class="dropdown-item" href="{{ route('purchases') }}">Minhas Compras</a></li>
 
                         @if (Auth::user()->nivel_id >= 2)
                             <li><a class="dropdown-item" href="#">Cadastro de Produtos</a></li>

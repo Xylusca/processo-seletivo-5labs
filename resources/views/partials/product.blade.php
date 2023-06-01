@@ -1,7 +1,7 @@
 <div class="col border-5" id="receita-view">
     <div class="card h-100 shadow">
         <a href="{{ route('product.show', ['id' => $product->id]) }}">
-            <div class="ratio ratio-16x9">
+            <div class="ratio ratio-1x1">
                 <img src="{{ $product->image1 }}" class="card-img-top" alt=" {{ $product->title }}" />
             </div>
         </a>
