@@ -53,10 +53,15 @@
                             <p class="my-0 mx-3"><strong>Estoque:</strong> {{ $product->stock }}</p>
                         </div>
                     </div>
-                    <div class="cart mt-4 align-items-center"> <button
-                            class="btn btn-primary text-uppercase mr-2 px-4">Comprar</button> <i
-                            class="fa fa-heart text-muted mx-2"></i><i class="fa fa-share-alt text-muted"></i>
-                    </div>
+                    <form action="{{ route('product.purchase') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                        <div class="cart mt-4 align-items-center">
+                            <button class="btn btn-primary text-uppercase mr-2 px-4">Comprar</button>
+                            <i class="fa fa-heart text-muted mx-2"></i><i class="fa fa-share-alt text-muted"></i>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

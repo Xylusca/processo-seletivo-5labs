@@ -51,6 +51,9 @@ Route::post('/password/register/', [ResetPasswordController::class, 'resetPasswo
 
 // Produto
 Route::get('/produto/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/produto/comprar', [ProductController::class, 'purchase'])->name('product.purchase');
+
+
 
 
 // Restaurar Importar Produtos da Api

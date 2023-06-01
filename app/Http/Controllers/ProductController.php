@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+
+use App\Models\Purchase;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
+
 
 class ProductController extends Controller
 {
@@ -22,6 +26,57 @@ class ProductController extends Controller
         // Passar o valor total para a view
         return view('page.product', compact('product', 'total'));
     }
+    public function purchase(Request $request)
+    {
+        $productId = $request->input('product_id');
+
+        $product = Product::findOrFail($productId);
+        $seller = $product->user;
+
+        if (Auth::check()) {
+            // Usuário autenticado
+            $buyer = Auth::user();
+
+            // Verificar se o vendedor é diferente do comprador
+            if ($seller->id === $buyer->id) {
+                return redirect()->back()->withErrors('Você não pode comprar seu próprio produto.');
+            }
+
+            // Verificar se o comprador tem créditos suficientes
+            $priceWithDiscount = $product->price - ($product->price * ($product->discount_percentage / 100));
+            if ($buyer->credits < $priceWithDiscount) {
+                return redirect()->back()->withErrors('Você não tem créditos suficientes para comprar este produto.');
+            }
+
+            // Realizar a transferência de créditos
+            $seller->credits += $priceWithDiscount;
+            $buyer->credits -= $priceWithDiscount;
+
+            // Salvar as alterações no banco de dados
+            $seller->save();
+            $buyer->save();
+
+            // Salvar a compra no banco de dados
+            $purchase = new Purchase([
+                'buyer_id' => $buyer->id,
+                'seller_id' => $seller->id,
+                'product_id' => $product->id,
+                'total_price' => $priceWithDiscount,
+            ]);
+
+            $purchase->save();
+
+
+            // Redirecionar com mensagem de sucesso
+            return redirect()->back()->with('success', 'Compra realizada com sucesso.');
+        } else {
+
+            // Usuário não autenticado
+            return redirect()->back()->withErrors('Você precisa estar logado para realizar a compra.');
+        }
+    }
+
+
 
     public function importProducts()
     {

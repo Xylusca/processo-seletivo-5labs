@@ -2,7 +2,7 @@
     <div class="card h-100 shadow">
         <a href="{{ route('product.show', ['id' => $product->id]) }}">
             <div class="ratio ratio-16x9">
-                <img src="{{ $product->image1 }}" class="card-img-top" alt=" {{ $product->title }}"/>
+                <img src="{{ $product->image1 }}" class="card-img-top" alt=" {{ $product->title }}" />
             </div>
         </a>
         <div class="card-body">
@@ -27,7 +27,8 @@
             <h6 class="card-subtitle my-2 text-muted">
                 <i class="fas fa-user"></i>
                 {{ $product->user->name }}
-                <a href="" class="text-primary link-underline text-decoration-none">
+                <a href="{{ route('home') }}/?category={{ $product->category }}"
+                    class="text-primary link-underline text-decoration-none">
                     <i class="fas fa-filter"></i>
                     {{ $product->category }}
                 </a>
@@ -39,10 +40,14 @@
         <div class="card-footer border-0 bg-white">
             <div class="buy d-flex justify-content-between align-items-center mb-2">
                 <div class="price text-success mt-3">
-                    <h6 class="m-0 text-danger text-decoration-line-through">R$ {{ number_format($product->price, 2, ',', '') }}</h6>
-                    <h5>R$ {{$total = number_format($product->price * (1 - ($product->discount_percentage / 100)), 2, ',', '');}}</h5>
+                    <h6 class="m-0 text-danger text-decoration-line-through">R$
+                        {{ number_format($product->price, 2, ',', '') }}</h6>
+                    <h5>R$
+                        {{ $total = number_format($product->price * (1 - $product->discount_percentage / 100), 2, ',', '') }}
+                    </h5>
                 </div>
-                <a href="#" class="btn btn-primary mt-3"><i class="fas fa-shopping-cart"></i> Comprar</a>
+                <a href="{{ route('product.show', ['id' => $product->id]) }}" class="btn btn-primary mt-3"><i
+                        class="fas fa-shopping-cart"></i> Comprar</a>
             </div>
         </div>
     </div>

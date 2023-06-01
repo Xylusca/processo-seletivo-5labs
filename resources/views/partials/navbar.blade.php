@@ -25,7 +25,7 @@
         <div class="col-md-3 d-flex justify-content-end">
             @if (Auth::check())
                 <div class="me-4 fw-bold p-2 border border rounded-pill "> <label
-                        for="Creditos">Créd</label> {{ Auth::user()->credits }}</div>
+                        for="Creditos">Créd</label> {{number_format(Auth::user()->credits, 2, ',', '')   }}</div>
                 <div class="flex-shrink-0 dropdown">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
                         data-bs-toggle="dropdown" aria-expanded="false">
