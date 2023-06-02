@@ -1,8 +1,7 @@
 <?php
 
-namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
+use Database\Seeders\NiveisSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(NiveisSeeder::class);
         // \App\Models\User::factory(10)->create();
     }
 }

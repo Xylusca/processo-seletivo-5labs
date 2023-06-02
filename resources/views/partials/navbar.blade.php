@@ -36,19 +36,19 @@
 
                         @if (Auth::user()->nivel_id >= 2)
                             @if (Auth::user()->status === 'pendente')
-                                <li><span class="dropdown-item disabled">Cadastro de Produtos</span></li>
-                                <li><span class="dropdown-item disabled">Produtos Cadastrados</span></li>
+                                <li><span class="dropdown-item disabled">Cadastro de Produto</span></li>
+                                <li><span class="dropdown-item disabled">Meus Produtos</span></li>
                                 <li><span class="dropdown-item disabled">Minhas Vendas</span></li>
                             @else
-                                <li><a class="dropdown-item" href="#">Cadastro de Produtos</a></li>
-                                <li><a class="dropdown-item" href="#">Produtos Cadastrados</a></li>
+                                <li><a class="dropdown-item" href="#">Cadastro de Produto</a></li>
+                                <li><a class="dropdown-item" href="#">Meus Produtos</a></li>
                                 <li><a class="dropdown-item" href="#">Minhas Vendas</a></li>
                             @endif
                         @endif
 
 
                         @if (Auth::user()->nivel_id == 3)
-                            <li><a class="dropdown-item" href="#">Usuários</a></li>
+                            <li><a class="dropdown-item" href="{{ route('usuarios') }}">Usuários</a></li>
                         @endif
 
                         <li>

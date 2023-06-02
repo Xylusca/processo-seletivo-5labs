@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Nivel;
 use App\Models\User;
 use Carbon\Carbon;
+
 
 
 
@@ -89,5 +91,51 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
+    }
+    public function consulta(Request $request)
+    {
+        $status = $request->query('status', '');
+        $order = $request->query('order', '');
+        $tipo = $request->query('tipo', '');
+        $searchQuery = $request->input('q');
+
+        // Consulta os usuários com base nos filtros
+        $users = User::query();
+
+        if ($status) {
+            $users->where('status', $status);
+        }
+
+        if ($tipo) {
+            $users->where('nivel_id', $tipo);
+        }
+
+        if ($searchQuery) {
+            $users->where('name', 'LIKE', "%{$searchQuery}%");
+        }
+
+        if ($order === 'maior-credito') {
+            $users->orderBy('credits', 'desc');
+        } elseif ($order === 'menor-credito') {
+            $users->orderBy('credits', 'asc');
+        }
+
+
+        // Execute a consulta final
+        $users = $users->get();
+
+        // Obtenha os nomes dos níveis disponíveis
+        $nivelNames = Nivel::pluck('name', 'id')->toArray();
+
+        // Retorne os usuários encontrados para a view ou execute outras ações
+        return view('page.usuarios', compact('users', 'status', 'order', 'tipo', 'nivelNames'));
+    }
+    public function atualizarStatus(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = $request->input('status');
+        $user->save();
+
+        return redirect()->back()->with('success', 'Status atualizado com sucesso.');
     }
 }

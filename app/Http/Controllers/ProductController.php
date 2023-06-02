@@ -74,7 +74,6 @@ class ProductController extends Controller
             // Redirecionar com mensagem de sucesso
             return redirect()->back()->with('success', 'Compra realizada com sucesso.');
         } else {
-
             // Usuário não autenticado
             return redirect()->back()->withErrors('Você precisa estar logado para realizar a compra.');
         }
@@ -121,8 +120,6 @@ class ProductController extends Controller
         return view('page.my-purchase', compact('purchases', 'searchQuery', 'order', 'selectedCategory'));
     }
 
-
-
     public function importProducts()
     {
         // Desativar a verificação do certificado SSL
@@ -135,19 +132,27 @@ class ProductController extends Controller
         if ($response->ok()) {
             $data = $response->json();
 
-            // Verifique se o vendedor já existe com base no e-mail
-            $seller = User::firstOrCreate(
-                ['email' => 'vendedor@example.com'],
-                [
+            $seller = User::where('email', 'vendedor@example.com')
+                ->orWhere('cpf', '000.000.000-00')
+                ->first();
+
+            if ($seller) {
+                // O vendedor já existe, retorne uma mensagem informando
+                return 'O e-mail ou CPF já estão sendo usados.';
+            } else {
+                // O vendedor não existe, crie um novo registro
+                $seller = User::create([
                     'name' => 'Vendedor API',
+                    'email' => 'vendedor@example.com',
                     'password' => bcrypt('12345678'),
                     'cpf' => '000.000.000-00',
                     'birthdate' => '2000-12-25',
                     'state' => 'teste',
                     'city' => 'teste',
                     'nivel_id' => 2
-                ]
-            );
+                ]);
+            }
+
 
             // Salve os produtos no banco de dados
             foreach ($data['products'] as $item) {

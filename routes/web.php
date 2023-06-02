@@ -24,21 +24,11 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Login
+// User
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/logar', [UserController::class, 'logar'])->name('logar');
 Route::get('/login/form', [UserController::class, 'loginForm'])->name('loginForm');
 Route::post('/login/register', [UserController::class, 'register'])->name('register');
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
-// Perfil
-Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::post('/perfil/atualizar', [ProfileController::class, 'update'])->name('profile.update');
-
-// Verificar E-mail
-Route::get('/email/enviar', [VerificationController::class, 'enviarEmailVerificacao'])->name('email.enviar');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('email.verify');
-
 
 // Esqueci Senha
 Route::get('/reset/form', [ForgotPasswordController::class, 'resetPassword'])->name('reset.form');
@@ -52,7 +42,33 @@ Route::post('/password/register/', [ResetPasswordController::class, 'resetPasswo
 // Produto
 Route::get('/produto/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/produto/comprar', [ProductController::class, 'purchase'])->name('product.purchase');
-Route::get('/Minhas_compras', [ProductController::class, 'myPurchases'])->name('purchases');
 
 // Restaurar Importar Produtos da Api
-Route::get('/produto/import-products', [ProductController::class, 'importProducts']);
+Route::get('/import-products', [ProductController::class, 'importProducts']);
+
+// Rotas para usuários de nível 1 ou superior
+Route::middleware('check.nivel_id:1')->group(function () {
+    // Sair da conta
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+    // Perfil
+    Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/perfil/atualizar', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Verificar E-mail
+    Route::get('/email/enviar', [VerificationController::class, 'enviarEmailVerificacao'])->name('email.enviar');
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('email.verify');
+
+    // Consultar Compras
+    Route::get('/minhas_compras', [ProductController::class, 'myPurchases'])->name('purchases');
+
+});
+
+// Rotas para usuários de nível 3 ou superior
+Route::middleware('check.nivel_id:3')->group(function () {
+    Route::get('/usuarios', [UserController::class, 'consulta'])->name('usuarios');
+    Route::put('/usuarios/{id}/status', [UserController::class, 'atualizarStatus'])->name('atualizarStatus');
+
+});
+
+
