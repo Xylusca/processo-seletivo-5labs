@@ -20,9 +20,13 @@
                             <i class="fas fa-long-arrow-alt-left"></i>
                             <a href="{{ route('home') }}" class="ms-1 text-decoration-none text-dark fw-bold">Back</a>
                         </div>
-                        <i class="fa fa-shopping-cart text-muted"></i>
+                        <div class="d-flex align-items-center">
+                            <p class="me-2 m-0 p-0"><i class="fas fa-eye me-2"></i>{{ $product->visualization }}</p>
+                            <i class="fa fa-shopping-cart text-muted"></i>
+                        </div>
                     </div>
-                    <div class="mt-4 mb-3"> <span class="text-uppercase text-muted">{{ $product->brand }}</span>
+                    <div class="mt-4 mb-3">
+                        <span class="text-uppercase text-muted">{{ $product->brand }}</span>
                         <h5 class="text-uppercase">{{ $product->title }}</h5>
                         @php
                             $roundedRating = floor($product->rating);

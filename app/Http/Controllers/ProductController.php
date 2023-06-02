@@ -18,12 +18,14 @@ class ProductController extends Controller
         // Obter o produto com base no ID fornecido
         $product = Product::findOrFail($id);
 
+        // Incrementar o valor da coluna "visualization"
+        $product->increment('visualization');
+
         // Calcular o valor total com desconto
         $discount = $product->price * ($product->discount_percentage / 100);
-
         $total = number_format($product->price - $discount, 2, ',', '');
 
-        // Passar o valor total para a view
+        // Passar o valor total e o produto para a view
         return view('page.product', compact('product', 'total'));
     }
     public function purchase(Request $request)

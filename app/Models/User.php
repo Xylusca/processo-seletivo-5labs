@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'city',
         'nivel_id',
         'remember_token',
+        'status',
     ];
 
     /**

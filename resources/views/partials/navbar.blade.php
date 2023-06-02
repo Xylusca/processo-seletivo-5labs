@@ -12,8 +12,7 @@
                     data-bs-toggle="dropdown" aria-expanded="false">Category</a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownCategory">
                     @foreach ($categories as $category)
-                        <li><a href=""
-                                class="dropdown-item">{{ $category }}</a></li>
+                        <li><a href="" class="dropdown-item">{{ $category }}</a></li>
                     @endforeach
                 </ul>
             </li>
@@ -24,8 +23,8 @@
 
         <div class="col-md-3 d-flex justify-content-end">
             @if (Auth::check())
-                <div class="me-4 fw-bold p-2 border border rounded-pill "> <label
-                        for="Creditos">Créd</label> {{number_format(Auth::user()->credits, 2, ',', '')   }}</div>
+                <div class="me-4 fw-bold p-2 border border rounded-pill "> <label for="Creditos">Créd</label>
+                    {{ number_format(Auth::user()->credits, 2, ',', '') }}</div>
                 <div class="flex-shrink-0 dropdown">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,10 +35,17 @@
                         <li><a class="dropdown-item" href="{{ route('purchases') }}">Minhas Compras</a></li>
 
                         @if (Auth::user()->nivel_id >= 2)
-                            <li><a class="dropdown-item" href="#">Cadastro de Produtos</a></li>
-                            <li><a class="dropdown-item" href="#">Produtos Cadastrados</a></li>
-                            <li><a class="dropdown-item" href="#">Minhas Vendas</a></li>
+                            @if (Auth::user()->status === 'pendente')
+                                <li><span class="dropdown-item disabled">Cadastro de Produtos</span></li>
+                                <li><span class="dropdown-item disabled">Produtos Cadastrados</span></li>
+                                <li><span class="dropdown-item disabled">Minhas Vendas</span></li>
+                            @else
+                                <li><a class="dropdown-item" href="#">Cadastro de Produtos</a></li>
+                                <li><a class="dropdown-item" href="#">Produtos Cadastrados</a></li>
+                                <li><a class="dropdown-item" href="#">Minhas Vendas</a></li>
+                            @endif
                         @endif
+
 
                         @if (Auth::user()->nivel_id == 3)
                             <li><a class="dropdown-item" href="#">Usuários</a></li>

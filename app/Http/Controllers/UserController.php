@@ -83,6 +83,7 @@ class UserController extends Controller
         $user->city = $validatedData['city'];
         $user->email = $validatedData['email'];
         $user->password = bcrypt($validatedData['password']);
+        $user->status = 'pendente';
         $user->nivel_id = $validatedData['users'];
 
         $user->save();

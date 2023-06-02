@@ -7,7 +7,7 @@
     <div class="background-image-container">
         <div class="container-fluid px-1 mx-auto">
             <div class="row d-flex justify-content-center">
-                <div class="col-md-6 col-sm-11 shadow p-5 border">
+                <div class="col-md-8 col-sm-11 shadow p-5 border">
                     <div class="card-register bg-white">
                         <div class="text-center">
                             <h3 class="text-center fw-bold">Editar Meu Perfil</h3>
