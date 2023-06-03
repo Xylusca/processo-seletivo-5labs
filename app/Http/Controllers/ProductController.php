@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-
 use App\Models\Purchase;
 use App\Models\Product;
 use App\Models\User;
@@ -119,7 +119,6 @@ class ProductController extends Controller
 
         return view('page.my-purchase', compact('purchases', 'searchQuery', 'order', 'selectedCategory'));
     }
-
     public function importProducts()
     {
         // Desativar a verificação do certificado SSL
@@ -184,5 +183,89 @@ class ProductController extends Controller
 
 
         return 'Falha ao importar produtos.';
+    }
+    public function productForm()
+    {
+        return view('page.productForm');
+    }
+    public function productRegister(Request $request)
+    {
+        $customMessages = [
+            'required' => 'O campo :attribute é obrigatório.',
+            'numeric' => 'O :attribute selecionado é inválido.',
+            'in' => 'O :attribute selecionado é inválido.',
+        ];
+
+        // Validação dos campos do formulário
+        $validatedData = $request->validate([
+            'brand' => 'required',
+            'title' => 'required',
+            'price' => 'required|numeric',
+            'description' => 'required',
+            'category' => 'required',
+            'stock' => 'required|numeric|int',
+        ], $customMessages);
+
+        // Obter o ID do vendedor autenticado
+        $vendorId = Auth::id();
+
+        // Criar uma instância do produto e definir os valores dos campos
+        $product = new Product();
+        $product->brand = $validatedData['brand'];
+        $product->title = $validatedData['title'];
+        $product->price = $validatedData['price'];
+        $product->description = $validatedData['description'];
+        $product->category = $validatedData['category'];
+        $product->stock = $validatedData['stock'];
+        $product->vendor_id = $vendorId;
+
+        // Processar e salvar as imagens
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            // Verificar se há pelo menos 1 imagem e no máximo 3 imagens
+            if (count($images) >= 1 && count($images) <= 3) {
+
+                // Obter a data atual
+                $currentDate = date('Y-m-d');
+
+                // Criar o diretório de destino se não existir
+                $directory = public_path('produtos/' . $currentDate);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+
+                // Definir um nome único para cada imagem e salvá-las no diretório de destino
+                $imageName1 = uniqid() . '.' . $images[0]->getClientOriginalExtension();
+                $imageName2 = uniqid() . '.' . $images[1]->getClientOriginalExtension();
+                $imageName3 = uniqid() . '.' . $images[2]->getClientOriginalExtension();
+
+                $imagePath1 = $directory . '/' . $imageName1;
+                $imagePath2 = $directory . '/' . $imageName2;
+                $imagePath3 = $directory . '/' . $imageName3;
+
+                Image::make($images[0])->resize(800, 600)->save($imagePath1);
+                Image::make($images[1])->resize(800, 600)->save($imagePath2);
+                Image::make($images[2])->resize(800, 600)->save($imagePath3);
+
+                // Gerar os links completos das imagens
+                $imageLink1 = asset('produtos/' . $currentDate . '/' . $imageName1);
+                $imageLink2 = asset('produtos/' . $currentDate . '/' . $imageName2);
+                $imageLink3 = asset('produtos/' . $currentDate . '/' . $imageName3);
+
+                // Salvar os links das imagens nas colunas correspondentes no banco de dados
+                $product->image1 = $imageLink1;
+                $product->image2 = $imageLink2;
+                $product->image3 = $imageLink3;
+            } else {
+                return redirect()->back()->with('error', 'Erro: Por favor, envie pelo menos 1 imagem e no máximo 3 imagens.');
+            }
+
+            // Salvar o produto no banco de dados
+            $product->save();
+
+            // Redirecionar para uma página de sucesso ou exibir uma mensagem
+            return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
+        }
     }
 }

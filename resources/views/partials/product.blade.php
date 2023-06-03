@@ -40,8 +40,11 @@
         <div class="card-footer border-0 bg-white">
             <div class="buy d-flex justify-content-between align-items-center mb-2">
                 <div class="price text-success mt-3">
-                    <h6 class="m-0 text-danger text-decoration-line-through">R$
-                        {{ number_format($product->price, 2, ',', '') }}</h6>
+                    @if (number_format($product->price, 2, ',', '') !=
+                            ($total = number_format($product->price * (1 - $product->discount_percentage / 100), 2, ',', '')))
+                        <h6 class="m-0 text-danger text-decoration-line-through">R$
+                            {{ number_format($product->price, 2, ',', '') }}</h6>
+                    @endif
                     <h5>R$
                         {{ $total = number_format($product->price * (1 - $product->discount_percentage / 100), 2, ',', '') }}
                     </h5>

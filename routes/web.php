@@ -64,6 +64,13 @@ Route::middleware('check.nivel_id:1')->group(function () {
 
 });
 
+
+// Rotas para usuários de nível 2 ou superior
+Route::middleware('check.nivel_id:2')->group(function () {
+    Route::get('/product/form', [ProductController::class, 'productForm'])->name('product.form');
+    Route::post('/product/register', [ProductController::class, 'productRegister'])->name('product.register');
+});
+
 // Rotas para usuários de nível 3 ou superior
 Route::middleware('check.nivel_id:3')->group(function () {
     Route::get('/usuarios', [UserController::class, 'consulta'])->name('usuarios');

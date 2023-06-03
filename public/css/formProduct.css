@@ -1,0 +1,49 @@
+.input-wrapper {
+    position: relative;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input-wrapper .padrao {
+    border: none;
+    border-bottom: 1px solid gray;
+    outline: none;
+    padding: 5px;
+    transition: border-color 0.3s;
+    border-radius: 0;
+}
+.input-wrapper textarea {
+    height: 130px;
+    font-size: 1rem;
+}
+
+.input-wrapper .padrao:focus {
+    box-shadow: none;
+}
+
+.input-wrapper .danger {
+    color: #ff0000;
+    border-color: #ff0000;
+}
+
+.danger::placeholder {
+    color: red;
+  }
+.input-wrapper .danger:focus {
+    border-color: #ff0000;
+}
+
+.input-wrapper .success {
+    color: #1d630c;
+    border-color: #1d630c;
+}
+
+.success::placeholder {
+    color: #1d630c;
+  }
+.input-wrapper .success:focus {
+    border-color: #1d630c;
+}

@@ -42,8 +42,11 @@
                             @endif
                         @endfor
                         <div class="flex-row align-items-center">
-                            <p class="fw-bold text-danger text-decoration-line-through m-0">R$
-                                {{ number_format($product->price, 2, ',', '') }}</p>
+                            @if (number_format($product->price, 2, ',', '') != $total)
+                                <p class="fw-bold text-danger text-decoration-line-through m-0">
+                                    R$ {{ number_format($product->price, 2, ',', '') }}
+                                </p>
+                            @endif
                             <span class="fw-bold fs-3 text-success">R$ {{ $total }}</span>
 
                         </div>

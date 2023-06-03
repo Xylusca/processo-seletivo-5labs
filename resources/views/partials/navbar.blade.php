@@ -40,7 +40,7 @@
                                 <li><span class="dropdown-item disabled">Meus Produtos</span></li>
                                 <li><span class="dropdown-item disabled">Minhas Vendas</span></li>
                             @else
-                                <li><a class="dropdown-item" href="#">Cadastro de Produto</a></li>
+                                <li><a class="dropdown-item" href="{{ route('product.form') }}">Cadastro de Produto</a></li>
                                 <li><a class="dropdown-item" href="#">Meus Produtos</a></li>
                                 <li><a class="dropdown-item" href="#">Minhas Vendas</a></li>
                             @endif
