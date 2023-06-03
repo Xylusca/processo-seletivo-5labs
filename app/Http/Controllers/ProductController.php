@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
 use App\Models\Product;
@@ -236,36 +237,45 @@ class ProductController extends Controller
                 }
 
                 // Definir um nome único para cada imagem e salvá-las no diretório de destino
-                $imageName1 = uniqid() . '.' . $images[0]->getClientOriginalExtension();
-                $imageName2 = uniqid() . '.' . $images[1]->getClientOriginalExtension();
-                $imageName3 = uniqid() . '.' . $images[2]->getClientOriginalExtension();
+                $imagePaths = [];
 
-                $imagePath1 = $directory . '/' . $imageName1;
-                $imagePath2 = $directory . '/' . $imageName2;
-                $imagePath3 = $directory . '/' . $imageName3;
+                foreach ($images as $index => $image) {
+                    $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                    $imagePath = $directory . '/' . $imageName;
 
-                Image::make($images[0])->resize(800, 600)->save($imagePath1);
-                Image::make($images[1])->resize(800, 600)->save($imagePath2);
-                Image::make($images[2])->resize(800, 600)->save($imagePath3);
+                    Image::make($image)->resize(800, 600)->save($imagePath);
 
-                // Gerar os links completos das imagens
-                $imageLink1 = asset('produtos/' . $currentDate . '/' . $imageName1);
-                $imageLink2 = asset('produtos/' . $currentDate . '/' . $imageName2);
-                $imageLink3 = asset('produtos/' . $currentDate . '/' . $imageName3);
+                    // Gerar o link completo da imagem
+                    $imageLink = asset('produtos/' . $currentDate . '/' . $imageName);
 
-                // Salvar os links das imagens nas colunas correspondentes no banco de dados
-                $product->image1 = $imageLink1;
-                $product->image2 = $imageLink2;
-                $product->image3 = $imageLink3;
+                    // Salvar o link da imagem na coluna correspondente no banco de dados
+                    $columnName = 'image' . ($index + 1);
+                    $product->$columnName = $imageLink;
+
+                    $imagePaths[] = $imagePath;
+                }
+
+                // Salvar o produto no banco de dados
+                $product->save();
+
+                // Redirecionar para uma página de sucesso ou exibir uma mensagem
+                return redirect()->back()->with('success', 'Produto cadastrado com sucesso!');
             } else {
                 return redirect()->back()->with('error', 'Erro: Por favor, envie pelo menos 1 imagem e no máximo 3 imagens.');
             }
-
-            // Salvar o produto no banco de dados
-            $product->save();
-
-            // Redirecionar para uma página de sucesso ou exibir uma mensagem
-            return redirect()->back()->with('success', 'Usuário cadastrado com sucesso!');
         }
+    }
+    public function sales()
+    {
+        $sellerId = Auth::id();
+        $purchases = Purchase::select('product_id', DB::raw('SUM(quantity)'));
+        $sellerId = Auth::id();
+        $purchases = Purchase::select('product_id', DB::raw('SUM(quantity) as total_quantity'), DB::raw('SUM(total_price) as total_price'))
+            ->where('seller_id', $sellerId)
+            ->groupBy('product_id')
+            ->get();
+
+
+        return view('page.my-sales', compact('purchases'));
     }
 }
