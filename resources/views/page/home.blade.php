@@ -14,9 +14,13 @@
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <!-- Exibir a Produtos -->
-        @foreach ($products as $product)
-            @include('partials/product')
-        @endforeach
+        @if ($products->isEmpty())
+            @include('partials/not-found')
+        @else
+            @foreach ($products as $product)
+                @include('partials/product')
+            @endforeach
+        @endif
     </div>
 
     <!-- Exibir a paginação -->
