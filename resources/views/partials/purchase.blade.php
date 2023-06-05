@@ -17,7 +17,7 @@
                         @if (isset($purchase->total_quantity))
                             <span class="text-primary">Unidades Vendidadas: {{ $purchase->total_quantity }}</span>
                         @else
-                            <span class="text-primary">Unidades: {{ $purchase->quantity }}</span>
+                            <span class="text-primary">Unidades Compradas: {{ $purchase->quantity }}</span>
                         @endif
                     </div>
                 </div>

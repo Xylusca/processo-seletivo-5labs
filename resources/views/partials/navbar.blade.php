@@ -41,7 +41,7 @@
                                 <li><span class="dropdown-item disabled">Minhas Vendas</span></li>
                             @else
                                 <li><a class="dropdown-item" href="{{ route('product.form') }}">Cadastro de Produto</a></li>
-                                <li><a class="dropdown-item" href="#">Meus Produtos</a></li>
+                                <li><a class="dropdown-item" href="{{ route('myProduct') }}">Meus Produtos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('sales') }}">Minhas Vendas</a></li>
                             @endif
                         @endif

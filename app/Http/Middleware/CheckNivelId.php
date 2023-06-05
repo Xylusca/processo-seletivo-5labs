@@ -18,7 +18,7 @@ class CheckNivelId
     {
         $user = $request->user();
 
-        // Verificar se o usuário está autenticado e possui nivel_id igual ao parâmetro fornecido
+        // Verificar se o usuário está autenticado e possui nivel_id igual ao parâmetro fornecido ou maior
         if ($user && $user->nivel_id >= $nivelId) {
             return $next($request);
         }

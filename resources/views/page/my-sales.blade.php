@@ -7,9 +7,6 @@
 
 
 @section('content')
-    <!-- Exibir a Pesquisa -->
-    @include('partials/search')
-
     @foreach ($purchases as $purchase)
     @if (!isset($purchase->skip) || !$purchase->skip)
         @include('partials.purchase')

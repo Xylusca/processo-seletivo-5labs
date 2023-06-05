@@ -61,22 +61,21 @@ Route::middleware('check.nivel_id:1')->group(function () {
 
     // Consultar Compras
     Route::get('/minhas_compras', [ProductController::class, 'myPurchases'])->name('purchases');
-
 });
 
 
 // Rotas para usuários de nível 2 ou superior
 Route::middleware('check.nivel_id:2')->group(function () {
+    Route::get('/product/editar/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
+    Route::post('/product/atualizar/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
     Route::get('/product/form', [ProductController::class, 'productForm'])->name('product.form');
     Route::post('/product/register', [ProductController::class, 'productRegister'])->name('product.register');
     Route::get('/minhas_vendas', [ProductController::class, 'sales'])->name('sales');
+    Route::get('/meus_produtos', [ProductController::class, 'myProduct'])->name('myProduct');
 });
 
 // Rotas para usuários de nível 3 ou superior
 Route::middleware('check.nivel_id:3')->group(function () {
     Route::get('/usuarios', [UserController::class, 'consulta'])->name('usuarios');
     Route::put('/usuarios/{id}/status', [UserController::class, 'atualizarStatus'])->name('atualizarStatus');
-
 });
-
-

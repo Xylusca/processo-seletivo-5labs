@@ -243,7 +243,7 @@ class ProductController extends Controller
                     $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
                     $imagePath = $directory . '/' . $imageName;
 
-                    Image::make($image)->resize(800, 600)->save($imagePath);
+                    Image::make($image)->save($imagePath);
 
                     // Gerar o link completo da imagem
                     $imageLink = asset('produtos/' . $currentDate . '/' . $imageName);
@@ -277,5 +277,101 @@ class ProductController extends Controller
 
 
         return view('page.my-sales', compact('purchases'));
+    }
+    public function myProduct()
+    {
+        $sellerId = Auth::id();
+        $products = Product::where('vendor_id', $sellerId)->get();
+
+        return view('page.my-product', compact('products'));
+    }
+    public function productEdit($id)
+    {
+        $product = Product::findOrFail($id);
+
+        return view('page.product-edit', compact('product'));
+    }
+    public function productUpdate(Request $request, $id)
+    {
+        // Recuperar o produto pelo ID
+        $product = Product::find($id);
+
+        // Verificar se o produto existe
+        if (!$product) {
+            return redirect()->back()->with('error', 'Produto não encontrado.');
+        }
+
+        // Verificar se o usuário logado é o proprietário do produto
+        if ($product->vendor_id !== auth()->user()->id) {
+            return redirect()->back()->with('error', 'Você não tem permissão para editar este produto.');
+        }
+
+        // Validar os dados do formulário
+        $validatedData = $request->validate([
+            'brand' => 'required',
+            'title' => 'required',
+            'price' => 'required|numeric',
+            'description' => 'required',
+            'category' => 'required',
+            'stock' => 'required|integer',
+        ]);
+
+        // Atualizar os dados do produto com base nos valores do formulário
+        $product->brand = $validatedData['brand'];
+        $product->title = $validatedData['title'];
+        $product->price = $validatedData['price'];
+        $product->description = $validatedData['description'];
+        $product->category = $validatedData['category'];
+        $product->stock = $validatedData['stock'];
+
+        // Verificar se há novas imagens enviadas
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            // Verificar se é um array de imagens
+            if (is_array($images)) {
+                // Verificar se o número de imagens é menor que 3
+                if (count($images) <= 3) {
+                    // dd($images);
+                    // Obter a data atual
+                    $currentDate = date('Y-m-d');
+
+                    // Criar o diretório de destino se não existir
+                    $directory = public_path('produtos/' . $currentDate);
+                    if (!is_dir($directory)) {
+                        mkdir($directory, 0755, true);
+                    }
+
+                    // Limpar as imagens antigas no banco de dados
+                    $product->image1 = null;
+                    $product->image2 = null;
+                    $product->image3 = null;
+
+                    // Salvar as novas imagens enviadas
+                    foreach ($images as $index => $image) {
+                        $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                        $imagePath = $directory . '/' . $imageName;
+
+                        // Salvar a imagem no diretório de destino
+                        Image::make($image)->save($imagePath);
+
+                        // Gerar o link completo da imagem
+                        $imageLink = asset('produtos/' . $currentDate . '/' . $imageName);
+
+                        // Salvar o link da imagem na coluna correspondente no banco de dados
+                        $columnName = 'image' . ($index + 1);
+                        $product->$columnName = $imageLink;
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Tem mais que 3 images.');
+                }
+            }
+        }
+
+        // Salvar as alterações do produto
+        $product->save();
+
+        // Redirecionar de volta para a página do produto com uma mensagem de sucesso
+        return redirect()->back()->with('success', 'Produto atualizado com sucesso.');
     }
 }

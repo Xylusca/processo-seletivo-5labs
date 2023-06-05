@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductImage;
 use App\Models\User;
 
 class Product extends Model
@@ -28,5 +29,14 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'vendor_id');
+    }
+
+
+    /**
+     * Define a relação com as imagens do produto.
+     */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }
